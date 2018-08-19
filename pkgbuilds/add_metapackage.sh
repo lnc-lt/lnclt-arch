@@ -6,20 +6,19 @@ pkgname=$1
 pkgdesc=$2
 depends=$3
 
-if [ -f pkg/$pkgname.PKGBUILD ]; then
-	echo "PKGBUILD with the name $pkgname.PKGBUILD found. Aborting."
+if [ -f pkg/$pkgname/PKGBUILD ]; then
+	echo "PKGBUILD with the name $pkgname found. Aborting."
 	exit 1
 fi
 
-pkg="$pkgname.PKGBUILD"
-
 cd pkg
+mkdir -p $pkgname
+cd $pkgname
+touch "PKGBUILD"
 
-touch "$pkg"
-
-cat >>$pkg <<EOF
+cat >>PKGBUILD <<EOF
 # Maintainer: Tibor Pilz <tbrpilz@googlemail.com>
-pkgname="$pkgname"
+pkgname=$pkgname
 pkgver=0.0.1
 pkgrel=1
 pkgdesc="$pkgdesc"
@@ -31,7 +30,7 @@ EOF
 
 for dependency in $depends
 do
-	printf "\t'$dependency'\n" >> $pkg
+	printf "\t'$dependency'\n" >> PKGBUILD
 done
 
-echo ")" >> $pkg
+echo ")" >> PKGBUILD
