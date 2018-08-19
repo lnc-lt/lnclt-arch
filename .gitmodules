@@ -1,9 +1,13 @@
 [submodule "arch-install-script"]
 	path = arch-install-script
 	url = ssh://git@github.com/lnc-lt/arch-install-script
+	master = master
+	branch = master
 [submodule "arch-repo-pkgbuilder"]
 	path = arch-repo-pkgbuilder
 	url = ssh://git@github.com/lnc-lt/arch-repo-pkgbuilder
+	branch = master
 [submodule "arch-lnclt-pkgbuilds"]
 	path = arch-lnclt-pkgbuilds
 	url = ssh://git@github.com/lnc-lt/arch-lnclt-pkgbuilds
+	branch = master
