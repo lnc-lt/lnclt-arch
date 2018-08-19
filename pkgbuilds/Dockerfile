@@ -1,10 +1,10 @@
 FROM archlinux/base
 
-RUN mkdir -p /app/{pkg,repo,chroots}
+RUN mkdir -p /app
 WORKDIR "/app"
 
-# Set up volumes
-VOLUME ./repo ./repo
+# # Set up volumes
+# VOLUME ./repo ./repo
 
 # Apply custom config for pacman and makepkg
 COPY ./pacman.conf /etc/pacman.conf
@@ -25,9 +25,6 @@ RUN useradd builduser -m \
 # Switch from root to builduser
 USER builduser
 
-# Create chroots
-RUN mkarchroot -C /etc/pacman.conf ./chroots/root base-devel
-
 # Install aurutils
 RUN gpg --recv-key 6BC26A17B9B7018A \
  && wget "https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz" \
@@ -35,8 +32,11 @@ RUN gpg --recv-key 6BC26A17B9B7018A \
  && cd aurutils \
  && makepkg -sci --noconfirm
 
-# Build packages and add to repository file
+# Make sure permissions are correct
+RUN sudo chown -R builduser /app/{repo,pkg}
+
+# Add build script
 COPY ./build_packages.sh ./build_packages.sh
 
 # Execture build_packages command
-CMD bash build_packages.sh
+CMD bash ./build_packages.sh

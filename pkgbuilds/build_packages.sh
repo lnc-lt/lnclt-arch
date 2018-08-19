@@ -11,8 +11,8 @@ packages=${@:-pkg/*}
 for package in $packages; do
 	cd "$package"
 	rm -f *.pkg.tar.gz
-	makepkg -c -s
+	makepkg -c -s --noconfirm
 	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.gz
-	cp *.pkg.tar.gz "$repo/"
+	mv *.pkg.tar.gz "$repo/"
 	cd -
 done
