@@ -6,6 +6,8 @@ root=$PWD
 
 cd "$root/$pkg"
 
+echo $USER
+
 # Get absolute paths for package locations
 for package in $(readlink -f $(ls))
 do
