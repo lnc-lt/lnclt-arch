@@ -1,0 +1,16 @@
+# Maintainer: Tibor Pilz <tbrpilz@googlmail.com>
+pkgname=lnclt-desktop
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Desktop environment for lnclt systems"
+arch=('any')
+url="https://github.com/tbrpilz/arch-pkgs"
+license=('MIT')
+depends=(
+	'bspwm'
+	'sxhkd'
+	'rofi'
+	'lxde-common'
+	'lxde-icon-theme'
+	'lxterminal'
+lxde-gtk3 gpicview-gtk3 lxde-gtk3 lxappearance-gtk3 lxde-gtk3 lxappearance-obconf-gtk3 lxde-gtk3 lxde-common lxde-gtk3 lxde-icon-theme lxde-gtk3 lxdm-gtk3 lxde-gtk3 lxhotkey-gtk3 lxde-gtk3 lxinput-gtk3 lxde-gtk3 lxlauncher-gtk3 lxde-gtk3 lxmusic-gtk3 lxde-gtk3 lxpanel-gtk3 lxde-gtk3 lxrandr-gtk3 lxde-gtk3 lxsession-gtk3 lxde-gtk3 lxtask-gtk3 lxde-gtk3 lxterminal lxde-gtk3 openbox lxde-gtk3 pcmanfm-gtk3
