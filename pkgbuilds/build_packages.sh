@@ -3,22 +3,19 @@
 root=$PWD
 pkg="$root/pkg"
 repo="$root/repo"
+
 chroots="$root/chroots"
+packages=${@:-pkg/*}
 
-cd "$pkg"
+# Create chroot if not existing
+[[ -d "$chroots/root" ]] || mkarchchroot -C /etc/pacman.conf "$chroots/root" base base-devel
 
-echo $PWD
-
-# Get absolute paths for package locations
-for package in $(ls)
-do
-	#Create package
-	cd $package
+# Build packages in clean chroot and copy to repo location
+for package in $packages; do
+	cd "$package"
+	rm -f *.pkg.tar.xz
 	makechrootpkg -cur $chroots
-
-	#Add package information to repo
 	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.xz
-
-	#Add package to repo
 	cp *.pkg.tar.xz "$repo/"
+	cd -
 done
