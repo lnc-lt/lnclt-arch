@@ -1,10 +1,7 @@
 FROM archlinux/base
 
-RUN mkdir -p /app
+RUN mkdir -p /app/repo
 WORKDIR "/app"
-
-# # Set up volumes
-# VOLUME ./repo ./repo
 
 # Apply custom config for pacman and makepkg
 COPY ./pacman.conf /etc/pacman.conf
@@ -13,8 +10,6 @@ COPY ./pkg ./pkg
 
 # Install base dependencies
 RUN pacman -Syu --noconfirm base-devel wget sudo devtools
-
-
 
 # Add builduser with passwordless sudo rights
 RUN useradd builduser -m \
