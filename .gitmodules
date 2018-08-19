@@ -1,0 +1,9 @@
+[submodule "arch-install-script"]
+	path = arch-install-script
+	url = ssh://git@github.com/lnc-lt/arch-install-script
+[submodule "arch-repo-pkgbuilder"]
+	path = arch-repo-pkgbuilder
+	url = ssh://git@github.com/lnc-lt/arch-repo-pkgbuilder
+[submodule "arch-lnclt-pkgbuilds"]
+	path = arch-lnclt-pkgbuilds
+	url = ssh://git@github.com/lnc-lt/arch-lnclt-pkgbuilds
