@@ -1,26 +1,30 @@
 #!/usr/bin/env bash
 
-pkg="pkg"
-repo="repo"
 root=$PWD
+pkg="$root/pkg"
+repo="$root/repo"
+chroots="$root/chroots"
 
-cd "$root/$pkg"
+cd "$pkg"
 
 echo $PWD
 
 # Get absolute paths for package locations
-for package in $(readlink -f $(ls))
+for package in $(ls)
 do
 	#Create package
 	cd $package
-	makepkg -s --noconfirm
+	echo $package
+	echo "$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+	wait 5
+	makechrootpkg -cur $chroots
 
 	#Add package information to repo
-	repo-add "$root/$repo/lnclt.db.tar.xz" *.pkg.tar.gz
+	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.xz
 
 	#Add package to repo
-	mv *.pkg.tar.gz "$root/$repo/"
+	mv *.pkg.tar.xz "$repo/"
 
-	#Clean up
-	rm -rf {pkg,src}
+	##Clean up
+	#rm -rf {pkg,src}
 done

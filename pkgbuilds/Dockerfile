@@ -3,11 +3,11 @@ FROM archlinux/base
 # Set up volumes
 VOLUME ./repo /repo
 
-COPY ./pkg /pkg
 
 # Apply custom config for pacman and makepkg
 COPY ./pacman.conf /etc/pacman.conf
-# COPY ./makepkg.conf /etc/makepkg.conf
+COPY ./makepkg.conf /etc/makepkg.conf
+COPY ./pkg /pkg
 
 # Install base dependencies
 RUN pacman -Syu --noconfirm base-devel wget sudo
