@@ -27,11 +27,9 @@ RUN gpg --recv-key 6BC26A17B9B7018A \
  && cd aurutils \
  && makepkg -sci --noconfirm
 
-# Make sure permissions are correct
-RUN sudo chown -R builduser /app/{repo,pkg}
-
 # Add build script
 COPY ./build_packages.sh ./build_packages.sh
 
-# Execture build_packages command
-CMD bash ./build_packages.sh
+# Make sure permissions are correct
+CMD sudo chown -R builduser /app/{repo,pkg} \
+ && bash ./build_packages.sh
