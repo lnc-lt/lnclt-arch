@@ -14,17 +14,11 @@ for package in $(ls)
 do
 	#Create package
 	cd $package
-	echo $package
-	echo "$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-	wait 5
 	makechrootpkg -cur $chroots
 
 	#Add package information to repo
 	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.xz
 
 	#Add package to repo
-	mv *.pkg.tar.xz "$repo/"
-
-	##Clean up
-	#rm -rf {pkg,src}
+	cp *.pkg.tar.xz "$repo/"
 done

@@ -9,7 +9,7 @@ license=('MIT')
 depends=(
 	'vim'
 	'tmux'
-	'ssh'
+	'openssh'
 	'zsh'
 	'git'
 )
