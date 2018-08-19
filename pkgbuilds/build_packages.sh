@@ -7,15 +7,12 @@ repo="$root/repo"
 chroots="$root/chroots"
 packages=${@:-pkg/*}
 
-# Create chroot if not existing
-[[ -d "$chroots/root" ]] || mkarchchroot -C /etc/pacman.conf "$chroots/root" base base-devel
-
 # Build packages in clean chroot and copy to repo location
 for package in $packages; do
 	cd "$package"
-	rm -f *.pkg.tar.xz
-	makechrootpkg -cur $chroots
-	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.xz
-	cp *.pkg.tar.xz "$repo/"
+	rm -f *.pkg.tar.gz
+	makepkg -c -s
+	repo-add "$repo/lnclt.db.tar.xz" *.pkg.tar.gz
+	cp *.pkg.tar.gz "$repo/"
 	cd -
 done
