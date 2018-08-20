@@ -6,7 +6,7 @@ repo="$root/repo"
 
 chroots="$root/chroots"
 packages=${@:-pkg/*}
-
+echo $PWD
 # Build packages in clean chroot and copy to repo location
 for package in $packages; do
 	cd "$package"

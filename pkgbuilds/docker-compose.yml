@@ -1,7 +1,9 @@
 version: '3'
 services:
-  buildrepo:
-    build: .
+  packagebuilder:
+    image: lnclt/arch-build
     volumes:
-      - ./pkg:/app/pkg
-      - ./repo:/app/repo
+      - ./pkg:/build/pkg
+      - ./repo:/build/repo
+      - ./scripts:/build/scripts
+    command: /build/scripts/build_packages.sh
