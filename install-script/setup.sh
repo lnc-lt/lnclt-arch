@@ -92,15 +92,14 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
-echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-
-arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
-arch-chroot /mnt chsh -s /usr/bin/zsh
-
-arch-chroot /mnt echo "$user:$password" | chpasswd
-arch-chroot /mnt echo "$root:$password" | chpasswd
-
-
+# Create admin user and set up password and default shell
+arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
+	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"\
+	&& echo '$user:$password' | chpasswd \
+	&& echo 'root:$password' | chpasswd"
 
 # echo "$user:$password" | chpasswd --root /mnt
 # echo "root:$password" | chpasswd --root /mnt
+
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+
