@@ -97,5 +97,10 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
 arch-chroot /mnt chsh -s /usr/bin/zsh
 
-echo "$user:$password" | chpasswd --root /mnt
-echo "root:$password" | chpasswd --root /mnt
+arch-chroot /mnt echo "$user:$password" | chpasswd
+arch-chroot /mnt echo "$root:$password" | chpasswd
+
+
+
+# echo "$user:$password" | chpasswd --root /mnt
+# echo "root:$password" | chpasswd --root /mnt
