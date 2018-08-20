@@ -69,16 +69,19 @@ EOF
 # Update sources
 sudo pacman -Sy
 
+# Install system
 pacstrap /mnt base base-devel lnclt-base lnclt-desktop lnclt-devel
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 
+# Add custom repository to system
 cat >>/mnt/etc/pacman.conf <<EOF
 [lnclt]
 SigLevel = Optional TrustAll
 Server = $REPO_URL
 EOF
 
+# Install bootloader
 arch-chroot /mnt bootctl install
 
 cat <<EOF > /mnt/boot/loader/loader.conf
@@ -92,14 +95,15 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
+# Allow sudo access to 'wheel' group
+cat <<EOF > /mnt/etc/sudoers.d/wheel
+$wheel ALL=(ALL) ALL
+EOF
+
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
 	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"\
 	&& echo '$user:$password' | chpasswd \
 	&& echo 'root:$password' | chpasswd"
 
-# echo "$user:$password" | chpasswd --root /mnt
-# echo "root:$password" | chpasswd --root /mnt
-
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-
