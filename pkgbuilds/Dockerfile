@@ -1,7 +1,7 @@
 FROM archlinux/base
 
 RUN mkdir -p /app/repo
-WORKDIR "/app"
+WORKDIR "/build"
 
 # Apply custom config for pacman and makepkg
 COPY ./pacman.conf /etc/pacman.conf
@@ -14,7 +14,7 @@ RUN pacman -Syu --noconfirm base-devel wget sudo devtools
 RUN useradd builduser -m \
  && passwd -d builduser \
  && printf "builduser ALL=(ALL) ALL\n" | tee -a /etc/sudoers \
- && chown -R builduser /app
+ && chown -R builduser /build
 
 # Switch from root to builduser
 USER builduser
@@ -26,11 +26,7 @@ RUN gpg --recv-key 6BC26A17B9B7018A \
  && cd aurutils \
  && makepkg -sci --noconfirm
 
-# Make sure permissions are correct
-RUN sudo chown -R builduser /app/{repo,pkg}
-
 # Add build script
-COPY ./build_packages.sh ./build_packages.sh
+COPY ./build_packages.sh /build/
 
-# Execture build_packages command
-CMD bash ./build_packages.sh
+ENTRYPOINT ["/build/build_packages.sh"]
