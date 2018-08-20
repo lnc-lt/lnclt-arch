@@ -5,10 +5,20 @@ trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 
 REPO_URL="https://arch.lnc.lt/repo"
 
-hostname=arch
-user=tibor
+hostname=$(dialog --stdout --inputbox "Please enter hostname:" 0 0) || exit 1
+clear
+: ${hostname:?"Hostname cannot be empty."}
 
-dialog --title "Password" --passwordbox "Choose password" 0 0 2> $password
+user=$(dialog --stdout --inputbox "Please enter admin username:" 0 0) || exit 1
+clear
+: ${user:?"Admin username cannot be empty."}
+
+password=$(dialog --stdout --passwordbox "Please enter admin password" 0 0) || exit 1
+clear
+: ${password:?"Admin password cannot be empty."}
+password2=$(dialog --stdout --passwordbox "Please enter admin password again" 0 0) || exit 1
+clear
+[[ "$password" == "$password2" ]] || ( echo "Sorry, the passwords did not match"; exit 1; )
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
@@ -57,10 +67,7 @@ Server = $REPO_URL
 EOF
 
 # Update sources
-sudo pacman -Syu
-
-# Install dependencies
-sudo pacman -S git
+sudo pacman -Sy
 
 # Install system
 pacstrap /mnt base base-devel lnclt-base lnclt-desktop lnclt-devel
@@ -88,8 +95,21 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
+# # Allow sudo access to 'wheel' group
+# cat <<EOF > /mnt/etc/sudoers.d/wheel
+# $wheel ALL=(ALL) ALL
+# EOF
+
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
-	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
+	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"\
+	&& echo '$user:$password' | chpasswd \
+	&& echo 'root:$password' | chpasswd"
 
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+
+## Clone dotfiles repository and symlink using stow
+DOTFILES_REPO="https://github.com/tbrpilz/dotfiles.git"
+arch-chroot /mnt sudo -u $user bash -c "cd /home/$user \
+	&& git clone $DOTFILES_REPO .dotfiles \
+	&& .dotfiles/install"
