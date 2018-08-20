@@ -2,7 +2,7 @@
 pkgname=lnclt-devel
 pkgver=0.0.1
 pkgrel=1
-pkgdesc="Development environment for lnclt systems"
+pkgdesc="Development environment"
 arch=('any')
 url="https://github.com/tbrpilz/arch-pkgs"
 license=('MIT')

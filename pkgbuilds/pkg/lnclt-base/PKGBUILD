@@ -2,7 +2,7 @@
 pkgname=lnclt-base
 pkgver=0.0.1
 pkgrel=1
-pkgdesc="Minimal packages for any system, whether it's a desktop or a server"
+pkgdesc="Minimal system configuration"
 arch=('any')
 url="https://github.com/lnc-lt/arch-lnclt-pkgbuilds"
 license=('MIT')
