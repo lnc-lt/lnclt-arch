@@ -2,7 +2,7 @@
 pkgname=lnclt-gui
 pkgver=0.0.1
 pkgrel=1
-pkgdesc=""
+pkgdesc="Display server packages"
 arch=('any')
 url="https://github.com/lnc-lt/arch-lnclt-pkgbuilds"
 license=('MIT')
