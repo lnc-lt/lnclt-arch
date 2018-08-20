@@ -6,8 +6,9 @@ trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 REPO_URL="https://arch.lnc.lt/repo"
 
 hostname=arch
-
 user=tibor
+
+dialog --title "Password" --passwordbox "Choose password" 0 0 2> $password
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
