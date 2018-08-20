@@ -35,4 +35,4 @@ VOLUME /app/repo
 COPY ./build_packages.sh ./build_packages.sh
 
 # Execture build_packages command
-CMD bash # ./build_packages.sh
+CMD bash ./build_packages.sh
