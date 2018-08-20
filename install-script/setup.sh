@@ -92,6 +92,6 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 ## Clone dotfiles repository and symlink using stow
 DOTFILES_REPO="https://github.com/tbrpilz/dotfiles.git"
-arch-chroot /mnt sudo -u $user bash -c "cd /home/$user \
+chroot --userspec=$user /mnt sudo -u $user bash -c "cd /home/$user \
 	&& git clone $DOTFILES_REPO .dotfiles \
 	&& .dotfiles/install"
