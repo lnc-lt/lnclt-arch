@@ -95,11 +95,6 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
-# # Allow sudo access to 'wheel' group
-# cat <<EOF > /mnt/etc/sudoers.d/wheel
-# $wheel ALL=(ALL) ALL
-# EOF
-
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
 	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"\
@@ -107,9 +102,3 @@ arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
 	&& echo 'root:$password' | chpasswd"
 
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-
-## Clone dotfiles repository and symlink using stow
-DOTFILES_REPO="https://github.com/tbrpilz/dotfiles.git"
-arch-chroot /mnt sudo -u $user bash -c "cd /home/$user \
-	&& git clone $DOTFILES_REPO .dotfiles \
-	&& .dotfiles/install"
