@@ -29,9 +29,10 @@ RUN gpg --recv-key 6BC26A17B9B7018A \
 
 # Make sure permissions are correct
 RUN sudo chown -R builduser /app/{repo,pkg}
+VOLUME /app/repo
 
 # Add build script
 COPY ./build_packages.sh ./build_packages.sh
 
 # Execture build_packages command
-CMD bash ./build_packages.sh
+CMD bash # ./build_packages.sh
