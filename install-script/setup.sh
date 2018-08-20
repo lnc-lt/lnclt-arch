@@ -95,10 +95,10 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
-# Allow sudo access to 'wheel' group
-cat <<EOF > /mnt/etc/sudoers.d/wheel
-$wheel ALL=(ALL) ALL
-EOF
+# # Allow sudo access to 'wheel' group
+# cat <<EOF > /mnt/etc/sudoers.d/wheel
+# $wheel ALL=(ALL) ALL
+# EOF
 
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\

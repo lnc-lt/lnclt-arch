@@ -14,3 +14,6 @@ depends=(
 	'git'
 	'stow'
 )
+package() {
+	install -Dm 0640 sudoers.wheel "$pkdir/etc/sudoers.d/wheel"
+}

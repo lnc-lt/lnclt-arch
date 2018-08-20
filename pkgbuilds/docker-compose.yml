@@ -1,0 +1,7 @@
+version: '3'
+services:
+  buildrepo:
+    build: .
+    volumes:
+      - ./pkg:/app/pkg
+      - ./repo:/app/repo
