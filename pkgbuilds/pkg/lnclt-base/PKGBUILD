@@ -12,4 +12,5 @@ depends=(
 	'openssh'
 	'zsh'
 	'git'
+	'stow'
 )
