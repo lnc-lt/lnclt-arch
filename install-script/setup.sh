@@ -56,7 +56,10 @@ Server = $REPO_URL
 EOF
 
 # Update sources
-sudo pacman -Sy
+sudo pacman -Syu
+
+# Install dependencies
+sudo pacman -S git
 
 # Install system
 pacstrap /mnt base base-devel lnclt-base lnclt-desktop lnclt-devel
@@ -89,9 +92,3 @@ arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
 	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
 
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-
-## Clone dotfiles repository and symlink using stow
-DOTFILES_REPO="https://github.com/tbrpilz/dotfiles.git"
-chroot --userspec=$user /mnt sudo -u $user bash -c "cd /home/$user \
-	&& git clone $DOTFILES_REPO .dotfiles \
-	&& .dotfiles/install"
