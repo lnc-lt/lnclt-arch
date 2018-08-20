@@ -9,7 +9,9 @@ This repository contains PKGBUILDs for all the packages on the https://arch.lnc.
   #### Dependencies:
 	 * Docker
 
-  Run `docker run -v "$PWD/repo:/repo" lnclt/arch-repo`.
+  Run `docker run -v "$PWD/repo:/build/repo" \
+			 -v "$PWD/pkg/:/build/pkg \
+			 -v "$PWD/repo/:/build/repo`.
 
 * Per hand
 
