@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+root=$PWD
+pkg=$PWD/pkgbuilds/lnclt
+repo=$PWD/repo
+
+cd pkgbuilds/lnclt
+makepkg -Ccfrs
+mv *.tar.gz $repo/
+cd $repo
+repo-add lnclt.db.tar.xz *.pkg.tar.gz
+cd $root

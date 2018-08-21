@@ -1,0 +1,2 @@
+rsync -avzhe ssh repo lnc.lt:/var/www/arch.lnc.lt
+rsync -avzhe ssh install-script/setup.sh lnc.lt:/var/www/arch.lnc.lt/setup.sh
