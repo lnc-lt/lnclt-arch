@@ -24,4 +24,6 @@ depends=(
 	'lxtask-gtk3'
 	'lxterminal'
 	'pcmanfm-gtk3'
+	'nm-connection-editor'
+	'network-manager-applet'
 )
