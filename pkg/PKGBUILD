@@ -1,0 +1,146 @@
+# Maintainer: Tibor Pilz <tbrpilz@googlemail.com>
+pkgbase='lnct'
+pkgname=(lnclt-base lnclt-desktop lnclt-laptop lnclt-devel lnclt-gaming)
+pkgver=20
+pkgrel=1
+pkgdesc="System config for lnclt systems"
+arch=(any)
+url="https://github.com/lnclt/arch-repo"
+license=(MIT)
+groups=(lnclt)
+
+source=(
+    lnclt-base.sudoers
+)
+
+# The sources all live in this repo and so are version controlled and checked
+# summed through git. There is not much point in adding these extra checksums
+# here espically when they have to be changed for every update to them.
+sha256sums=(SKIP)
+
+package_lnclt-base() {
+    install=lnclt-base.install
+
+    # Base group
+    depends=(bash bzip2 coreutils cryptsetup device-mapper dhcpcd diffutils
+    e2fsprogs file filesystem findutils gawk gcc-libs gettext glibc grep gzip
+    inetutils iproute2 iputils less licenses linux logrotate man-db man-pages
+    mdadm pacman pciutils pcmciautils perl procps-ng psmisc s-nail sed shadow
+    sysfsutils systemd-sysvcompat tar texinfo usbutils util-linux which)
+    # Explicitly removed from the base group: jfsutils lvm2 nano netctl reiserfsprogs vi xfsprogs
+
+    # Extra general packages
+    depends+=(sudo ripgrep exa fd tmux wget fzf unzip dialog)
+
+    install -Dm 0644 lnclt-base-vconsole.conf "${pkgdir}/etc/vconsole.conf"
+    install -Dm 0640 lnclt-base.sudoers "${pkgdir}/etc/sudoers.d/lnclt-base"
+
+    # Debugging tools
+    depends+=(lsof bind-tools mtr socat htop iotop openbsd-netcat)
+
+    # Networking
+    depends+=(wpa_supplicant iwd avahi nss-mdns openssh)
+
+    # Shells
+    depends+=(zsh)
+
+    install -Dm 0755 lnclt-base.sh "${pkgdir}/etc/profile.d/lnclt-base.sh"
+    install -Dm 0644 lnclt-base-zsh.local "${pkgdir}/etc/zsh/zshrc.local"
+
+    # Filesystems
+    depends+=(exfat-utils dosfstools f2fs-tools)
+
+    # Editor
+    depends+=(oni neovim python-neovim python2-neovim neovim-languageclient
+    nvim-completion-manager-git neovim-fugitive)
+
+		# Fonts
+    depends+=(noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+    ttf-monofur ttf-dejavu xorg-fonts-misc)
+}
+
+package_lnclt-desktop() {
+    install=lnclt-desktop.install
+    depends=(lnclt-base)
+
+    # lxde & bspwm
+    depends+=(bspwm sxhkd lxde-common)
+
+    # Login manager
+    depends+=(lxdm-gtk3)
+
+    # Applications
+    depends+=(xrvt-unicode firefox thunderbird)
+
+    # Utility
+    depends+=(redshift python-gobject bluez bluez-utils pulseaudio pulseaudio-alsa pavucontrol)
+
+    # Drivers and utilities
+    depends+=(libinput-gestures xf86-input-libinput xf86-input-synaptics
+    xf86-video-intel xf86-video-vesa)
+
+    # Xorg packages and utilities
+    depends+=(xorg-xsetroot xorg-xkill xorg-xbacklight xorg-bdftopcf
+    xorg-iceauth xorg-luit xorg-mkfontdir xorg-mkfontscale xorg-sessreg
+    xorg-setxkbmap xorg-smproxy xorg-x11perf xorg-xauth xorg-xbacklight
+    xorg-xcmsdb xorg-xcursorgen xorg-xdpyinfo xorg-xdriinfo xorg-xev
+    xorg-xgamma xorg-xhost xorg-xinput xorg-xkbcomp xorg-xkbevd xorg-xkbutils
+    xorg-xkill xorg-xlsatoms xorg-xlsclients xorg-xmodmap xorg-xpr xorg-xprop
+    xorg-xrandr xorg-xrdb xorg-xrefresh xorg-xset xorg-xsetroot xorg-xvinfo
+    xorg-xwd xorg-xwininfo xorg-xwud)
+
+    install -Dm 0644 lnclt-desktop-00-keyboard.conf "${pkgdir}/etc/X11/xorg.conf.d/00-keyboard.conf"
+    install -Dm 0644 lnclt-desktop-50-mouse-acceleration.conf "${pkgdir}/etc/X11/xorg.conf.d/50-mouse-acceleration.conf"
+    install -Dm 0755 lnclt-desktop.sh "${pkgdir}/etc/X11/xinit/xinitrc.d/30-lnclt-desktop.sh"
+}
+
+package_lnclt-synergy() {
+  depends=(lnclt-desktop synergy)
+}
+
+package_lnclt-gaming() {
+    depends=(lnclt-desktop steam nvidia nvidia-utils lib32-nvidia-utils
+    lib32-libpulse ttf-liberation wqy-zenhei)
+}
+
+package_lnclt-laptop() {
+    depends=('lnclt-desktop' 'powertop')
+}
+
+package_lnclt-devel() {
+    depends=(lnclt-base)
+
+    # Base Group
+    depends+=(autoconf automake binutils bison fakeroot file findutils flex
+    gawk gcc gettext grep groff gzip libtool m4 make pacman patch pkg-config
+    sed sudo systemd texinfo util-linux which)
+
+    # General tools
+    depends+=(git cmake jq)
+}
+
+package_lnclt-devel-virtualisation() {
+    depends=(lnclt-devel)
+
+    # Virtualisation
+    depends+=(qemu qemu-arch-extra vagrant libvirt)
+
+    # Docker
+    depends+=(docker docker-compose dnsmasq)
+}
+
+package_lnclt-devel-languages() {
+    depends=(lnclt-devel)
+
+		# Python
+		depends+=(python python3)
+
+    # Node
+    depends+=(yarn nodejs)
+}
+
+package_lnclt-devel-embedded() {
+    depends=(lnclt-devel)
+
+    depends+=(lnclt-devel qemu qemu-arch-extra picocom arm-linux-gnueabihf-gcc ddrescue)
+}
