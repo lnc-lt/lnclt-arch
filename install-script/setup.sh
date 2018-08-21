@@ -114,7 +114,7 @@ part_root="$(ls ${device}* | grep -E "^${device}p?2$")"
 wipefs "${part_boot}"
 wipefs "${part_root}"
 mkfs.vfat -F32 "${part_boot}"
-mkfs.btrfs "${part_root}"
+mkfs.btrfs -f "${part_root}"
 
 ### Mount partitions
 mount "${part_root}" /mnt
