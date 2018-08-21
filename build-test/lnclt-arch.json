@@ -8,8 +8,8 @@
 		"headless": "false",
 
     "compression_level": "6",
-    "cpus": "6",
-    "disk_size": "40000",
+    "cpus": "8",
+    "disk_size": "8000",
     "memory": "4096",
     "ssh_timeout": "60m"
   },
@@ -23,14 +23,14 @@
     "iso_checksum_url": "{{user `arch_mirror`}}{{user `iso_checksum_url`}}",
     "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
-    "output_directory": "output-archlinux-x86_64-{{build_type}}",
-    "vm_name": "packer-archlinux-x86_64",
+    "output_directory": "/mnt/vms/images/output-lnclt-archlinux-{{build_type}}",
+    "vm_name": "lnclt-archlinux",
     "disk_size": "{{user `disk_size`}}",
     "headless": "{{user `headless`}}",
     "http_directory": "http",
-    "boot_wait": "5s",
+    "boot_wait": "1s",
     "boot_command": [
-      "<enter><wait10><wait10>",
+      "<enter><wait20>",
       "curl -O 'http://{{.HTTPIP}}:{{.HTTPPort}}/archlinux/install{,-chroot}.sh'<enter><wait>",
       "bash install.sh < install-chroot.sh && systemctl reboot<enter>"
     ],
