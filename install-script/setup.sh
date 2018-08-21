@@ -87,7 +87,7 @@ if $dryrun; then
 	echo "Pacstrap would install the lnclt package group to the newly created device."
 	exit 0
 fi
-exit 0
+
 ### Set up logging ###
 exec 1> >(tee "stdout.log")
 exec 2> >(tee "stderr.log")
