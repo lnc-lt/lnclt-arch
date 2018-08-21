@@ -1,24 +1,31 @@
 #!/bin/bash
 # WARNING: this script will destroy data on the selected disk.
+# This script can be run by executing the following:
+#   curl -sL https://git.io/vAoV8 | bash
 set -uo pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 
 REPO_URL="https://arch.lnc.lt/repo"
 
-hostname=$(dialog --stdout --inputbox "Please enter hostname:" 0 0) || exit 1
-clear
-: ${hostname:?"Hostname cannot be empty."}
+echo "Getting dependencies"
+pacman -Sy
+pacman -S pacman-contrib --noconfirm
 
-user=$(dialog --stdout --inputbox "Please enter admin username:" 0 0) || exit 1
+### Get infomation from user ###
+hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1
 clear
-: ${user:?"Admin username cannot be empty."}
+: ${hostname:?"hostname cannot be empty"}
 
-password=$(dialog --stdout --passwordbox "Please enter admin password" 0 0) || exit 1
+user=$(dialog --stdout --inputbox "Enter admin username" 0 0) || exit 1
 clear
-: ${password:?"Admin password cannot be empty."}
-password2=$(dialog --stdout --passwordbox "Please enter admin password again" 0 0) || exit 1
+: ${user:?"user cannot be empty"}
+
+password=$(dialog --stdout --passwordbox "Enter admin password" 0 0) || exit 1
 clear
-[[ "$password" == "$password2" ]] || ( echo "Sorry, the passwords did not match"; exit 1; )
+: ${password:?"password cannot be empty"}
+password2=$(dialog --stdout --passwordbox "Enter admin password again" 0 0) || exit 1
+clear
+[[ "$password" == "$password2" ]] || ( echo "Passwords did not match"; exit 1; )
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
@@ -40,7 +47,7 @@ parted --script "${device}" -- mklabel gpt \
   mkpart primary linux-swap 129MiB ${swap_end} \
   mkpart primary ext4 ${swap_end} 100%
 
-# Simple globbing was not enough as on one device I needed to match /dev/mmcblk0p1
+# Simple globbing was not enough as on one device I needed to match /dev/mmcblk0p1 
 # but not /dev/mmcblk0boot1 while being able to match /dev/sda1 on other devices.
 part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_swap="$(ls ${device}* | grep -E "^${device}p?2$")"
@@ -52,7 +59,7 @@ wipefs "${part_root}"
 
 mkfs.vfat -F32 "${part_boot}"
 mkswap "${part_swap}"
-mkfs.ext4 "${part_root}"
+mkfs.f2fs -f "${part_root}"
 
 swapon "${part_swap}"
 mount "${part_root}" /mnt
@@ -66,22 +73,16 @@ SigLevel = Optional TrustAll
 Server = $REPO_URL
 EOF
 
-# Update sources
-sudo pacman -Sy
-
-# Install system
-pacstrap /mnt base
+pacstrap /mnt base base-devel lnclt-base lnclt-desktop lnclt-devel
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 
-# Add custom repository to system
 cat >>/mnt/etc/pacman.conf <<EOF
 [lnclt]
 SigLevel = Optional TrustAll
 Server = $REPO_URL
 EOF
 
-# Install bootloader
 arch-chroot /mnt bootctl install
 
 cat <<EOF > /mnt/boot/loader/loader.conf
@@ -95,10 +96,10 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
+echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
+
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
 	&& useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"\
 	&& echo '$user:$password' | chpasswd \
 	&& echo 'root:$password' | chpasswd"
-
-echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
