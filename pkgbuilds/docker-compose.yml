@@ -1,6 +1,6 @@
 version: '3'
 services:
-  packagebuilder:
+  pkgbuilder:
     image: lnclt/arch-build
     volumes:
       - ./pkg:/build/pkg

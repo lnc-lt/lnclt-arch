@@ -1,6 +1,6 @@
 # Maintainer: Tibor Pilz <tbrpilz@googlmail.com>
 pkgname=lnclt-desktop
-pkgver=0.0.1
+pkgver=0.0.2
 pkgrel=1
 pkgdesc="Desktop environment for lnclt systems"
 arch=('any')
