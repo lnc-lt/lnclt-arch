@@ -96,7 +96,11 @@ initrd   /initramfs-linux.img
 options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
-echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
+# Create locale and set system language
+arch-chroot /mnt bash -c "ln -sf /usr/share/zoneinfo/Europe/Berlin /mnt/etc/localtime \
+	&& echo \"LANG=en_US.UTF-8\" > /etc/locale.conf \
+  && sed 's/#en_US/en_US/' -i /etc/locale.gen \
+	&& locale-gen"
 
 # Create admin user and set up password and default shell
 arch-chroot /mnt bash -c "chsh -s /usr/bin/zsh\
