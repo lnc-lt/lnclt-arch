@@ -5,6 +5,8 @@
 set -uo pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 
+REPO_URL="https://arch.lnc.lt/repo"
+
 hostname=""
 user=""
 password=""
@@ -94,11 +96,6 @@ exec 2> >(tee "stderr.log")
 
 timedatectl set-ntp true
 
-### Set up repository and dependencies ###
-REPO_URL="https://arch.lnc.lt/repo"
-pacman -Sy
-pacman -S pacman-contrib --noconfirm
-
 ### Prepare target disk device partitioning ###
 parted --script "${device}" -- mklabel gpt \
   mkpart ESP fat32 1Mib 129MiB \
@@ -121,16 +118,12 @@ mount "${part_root}" /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
-### Install and configure the basic system ###
-cat >>/etc/pacman.conf <<EOF
-[lnclt]
-SigLevel = Optional TrustAll
-Server = $REPO_URL
-EOF
-
-pacstrap /mnt lnclt-base lnclt-desktop
+# ### Install and configure the basic system ###
+pacstrap /mnt base base-devel
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
+
+### Set up repository and dependencies ###
 
 cat >>/mnt/etc/pacman.conf <<EOF
 [lnclt]
@@ -152,7 +145,7 @@ options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
 EOF
 
 # Create locale and set system language
-arch-chroot /mnt bash -c "ln -sf /usr/share/zoneinfo/Europe/Berlin /mnt/etc/localtime \
+arch-chroot /mnt bash -c "ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
 	&& echo \"LANG=en_US.UTF-8\" > /etc/locale.conf \
   && sed 's/#en_US/en_US/' -i /etc/locale.gen \
 	&& locale-gen"
