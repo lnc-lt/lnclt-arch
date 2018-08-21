@@ -1,7 +1,7 @@
 # Maintainer: Tibor Pilz <tbrpilz@googlemail.com>
 pkgbase='lnct'
 pkgname=(lnclt-base lnclt-desktop lnclt-devel lnclt-gaming)
-pkgver=0.1.0
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="System config for lnclt systems"
 arch=(any)
@@ -20,10 +20,13 @@ sha256sums=(
 )
 
 package_lnclt-base() {
-    # Extra general packages
+    # General packages
     depends+=(sudo ripgrep exa fd tmux wget fzf unzip dialog)
 
     install -Dm 0640 lnclt-base.sudoers "${pkgdir}/etc/sudoers.d/lnclt-base"
+
+		# Boot
+		depends+=(grub)
 
     # Debugging tools
     depends+=(glances)
@@ -50,7 +53,7 @@ package_lnclt-desktop() {
     depends=(lnclt-base)
 
     # bspwm & lxde-gtk3
-    depends+=(bspwm sxhkd xappearance-gtk3 lxappearance-obconf-gtk3 lxde-common
+    depends+=(bspwm sxhkd lxappearance-gtk3 lxappearance-obconf-gtk3 lxde-common
 		lxde-icon-theme lxinput-gtk3 lxpanel-gtk3 lxrandr-gtk3 lxsession-gtk3
 		lxtask-gtk3)
 

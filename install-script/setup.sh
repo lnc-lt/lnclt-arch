@@ -77,7 +77,7 @@ if [[ -z "$password" ]]; then
 fi
 
 if [[ -z "$device" ]]; then
-	devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
+	devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb" | tac)
 	device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
 	clear
 fi
@@ -118,12 +118,12 @@ mount "${part_root}" /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
-### Set up custom repository for installation ###
-cat >>/etc/pacman.conf <<EOF
-[lnclt]
-SigLevel = Optional TrustAll
-Server = $REPO_URL
-EOF
+# ### Set up custom repository for installation ###
+# cat >>/etc/pacman.conf <<EOF
+# [lnclt]
+# SigLevel = Optional TrustAll
+# Server = $REPO_URL
+# EOF
 
 # ### Install and configure the basic system ###
 pacstrap /mnt base base-devel lnclt-desktop

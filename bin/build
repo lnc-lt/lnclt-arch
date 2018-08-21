@@ -4,9 +4,12 @@ root=$PWD
 pkg=$PWD/pkgbuilds/lnclt
 repo=$PWD/repo
 
+# Clean repo directory
+rm $repo/*
+
 cd pkgbuilds/lnclt
 makepkg -Ccfrs
-mv *.tar.gz $repo/
+mv *.pkg.tar.gz $repo/
 cd $repo
 repo-add lnclt.db.tar.xz *.pkg.tar.gz
 cd $root
