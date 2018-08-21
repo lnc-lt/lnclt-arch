@@ -117,30 +117,16 @@ package_lnclt-devel() {
 
     # General tools
     depends+=(git cmake jq)
-}
-
-package_lnclt-devel-virtualisation() {
-    depends=(lnclt-devel)
 
     # Virtualisation
     depends+=(qemu qemu-arch-extra vagrant libvirt)
 
     # Docker
     depends+=(docker docker-compose dnsmasq)
-}
-
-package_lnclt-devel-languages() {
-    depends=(lnclt-devel)
 
 		# Python
 		depends+=(python python3)
 
     # Node
     depends+=(yarn nodejs)
-}
-
-package_lnclt-devel-embedded() {
-    depends=(lnclt-devel)
-
-    depends+=(lnclt-devel qemu qemu-arch-extra picocom arm-linux-gnueabihf-gcc ddrescue)
 }
