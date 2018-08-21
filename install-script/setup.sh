@@ -118,13 +118,19 @@ mount "${part_root}" /mnt
 mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
+### Set up custom repository for installation ###
+cat >>/mnt/etc/pacman.conf <<EOF
+[lnclt]
+SigLevel = Optional TrustAll
+Server = $REPO_URL
+EOF
+
 # ### Install and configure the basic system ###
 pacstrap /mnt base base-devel lnclt-desktop
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 
-### Set up repository and dependencies ###
-
+### Set up custom repository for target system###
 cat >>/mnt/etc/pacman.conf <<EOF
 [lnclt]
 SigLevel = Optional TrustAll
