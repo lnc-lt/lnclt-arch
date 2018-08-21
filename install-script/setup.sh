@@ -119,7 +119,7 @@ mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
 ### Set up custom repository for installation ###
-cat >>/mnt/etc/pacman.conf <<EOF
+cat >>/etc/pacman.conf <<EOF
 [lnclt]
 SigLevel = Optional TrustAll
 Server = $REPO_URL
