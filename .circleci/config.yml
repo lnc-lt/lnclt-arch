@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: lnclt/arch-build:latest
+    steps:
+      - checkout
+      - attach_workspace:
+        at: ~/lnclt-arch/pkgbuilds
+      - run:
+        name: Build packages
+        command: ./build_packages.sh
