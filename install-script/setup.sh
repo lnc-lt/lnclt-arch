@@ -119,7 +119,7 @@ mkdir /mnt/boot
 mount "${part_boot}" /mnt/boot
 
 # ### Install and configure the basic system ###
-pacstrap /mnt base base-devel
+pacstrap /mnt base base-devel lnclt-desktop
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 
