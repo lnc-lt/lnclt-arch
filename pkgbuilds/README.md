@@ -1,25 +1,13 @@
-## PKGBUILDS for lnc.lt custom arch repository
+## Arch Linux Meta-package group for lnclt systetms
 
-This repository contains PKGBUILDs for all the packages on the https://arch.lnc.lt/repo repository. The packages are mostly meta-packages, allowing for easy, modular scaffolding of different Arch Linux installs.
+### Contents
 
-### Usage
+ * lnclt-base
+   Base packages for any system.
 
-* Via Docker
-  
-  #### Dependencies:
-	 * Docker
+ * lnclt-desktop
+   Provides a graphical desktop using bspwm and lxde.
 
-  Run `docker run -v "$PWD/repo:/build/repo" \
-			 -v "$PWD/pkg/:/build/pkg \
-			 -v "$PWD/repo/:/build/repo`.
+ * lnclt-devel
+   Different packages for development enviroment.
 
-* Per hand
-
-  #### Dependencies:
-	  * Arch Linux
-	  * base-devel, wget, and a non-root user for installing packages
-	  * aurutils (aur)
-
-  Run `./build_packages.sh`. Ensure the proper pkg and repo paths are set inside the script.
-  By default, it assumes a `pkg` folder full of package folders, which in turn contain the PKGBUILDS,
-  as well as a `repo` folder, which is where the repostiory files and package binaries are saved.

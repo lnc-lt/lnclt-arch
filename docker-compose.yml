@@ -1,9 +1,7 @@
 version: '3'
 services:
-  pkgbuilder:
+  build_lnclt_package:
     image: lnclt/arch-build
     volumes:
-      - ./pkg:/build/pkg
-      - ./repo:/build/repo
-      - ./scripts:/build/scripts
-    command: /build/scripts/build_packages.sh
+      - ./pkgbuilds/lnclt:/build
+    command: makepkg -C -r -s
