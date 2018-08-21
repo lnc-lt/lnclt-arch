@@ -70,7 +70,7 @@ EOF
 sudo pacman -Sy
 
 # Install system
-pacstrap /mnt base base-devel lnclt-base lnclt-desktop lnclt-devel
+pacstrap /mnt base
 genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 
