@@ -1,23 +1,39 @@
 # Maintainer: Tibor Pilz <tbrpilz@googlemail.com>
-pkgbase='lnct'
-pkgname=(lnclt-base lnclt-desktop lnclt-devel lnclt-gaming)
-pkgver=0.1.2
+pkgbase="lnct"
+pkgname=(lnclt-base lnclt-desktop lnclt-devel lnclt-gaming lnclt-dotfiles)
+pkgver=0.1.5
 pkgrel=1
 pkgdesc="System config for lnclt systems"
-arch=(any)
-url="https://github.com/lnclt/arch-repo"
+arch=('any')
+source=('lnclt'::git+https://lnc-lt/lnclt-arch/pkgbuilds/lnclt)
+url="https://github.com/lnc-lt/lnclt-arch"
 license=(MIT)
 groups=(lnclt)
 
 source=(
     lnclt-base.sudoers
 		lnclt-desktop.install
+		lnclt-dotfiles.install
 )
 
 sha256sums=(
 	SKIP
 	SKIP
+	SKIP
 )
+
+package_lnclt-dotfiles() {
+	pkgname="lnclt-dotfiles"
+	makedepends=(git)
+	depends=(stow)
+
+	source=('${pkgname}::git+github.com/tbrpilz/dotfiles')
+	md5sums=('skip')
+
+	pkgver="0.1.9"
+	cd "${pkgname}"
+	cat ${ls -d ./*} >> /home/tibor/test.txt
+}
 
 package_lnclt-base() {
     # General packages
@@ -26,7 +42,7 @@ package_lnclt-base() {
     install -Dm 0640 lnclt-base.sudoers "${pkgdir}/etc/sudoers.d/lnclt-base"
 
 		# Boot
-		depends+=(grub)
+		depends+=(refind-efi)
 
     # Debugging tools
     depends+=(glances)

@@ -3,6 +3,7 @@ repo/
 *.files
 *.tar.gz
 *.tar.xz
-/pkg/**/pkg/
-/pkg/**/src/
+/pkgbuilds/**/pkg/
+/pkgbuilds/**/src/
+/build-test/packer_cache
 *.log

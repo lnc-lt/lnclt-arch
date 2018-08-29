@@ -15,10 +15,11 @@ export device
 
 memory_size_in_kilobytes=$(free | awk '/^Mem:/ { print $2 }')
 swap_size_in_kilobytes=$((memory_size_in_kilobytes * 2))
+
 sfdisk "$device" <<EOF
 label: dos
-size=${swap_size_in_kilobytes}KiB, type=82
-                                   type=83, bootable
+size=2GiB, type=82
+					 type=83, bootable
 EOF
 mkswap "${device}1"
 mkfs.ext4 "${device}2"
