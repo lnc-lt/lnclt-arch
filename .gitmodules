@@ -1,0 +1,3 @@
+[submodule "installation/20-post-installation/aconfmgr"]
+	path = installation/20-post-installation/aconfmgr
+	url = https://github.com/CyberShadow/aconfmgr
