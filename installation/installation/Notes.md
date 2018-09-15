@@ -61,8 +61,19 @@ This should happen using chroot.
  1. `echo 'arch' > /etc/hostname'` to set hostname
  2. To create hosts entries:
 		
-		echo <<EOT >> /etc/hosts'
-		127.0.0.1		localhost
-		::1					localhost
-		127.0.1.1		arch.localdomain arch
+		cat <<EOT >> /etc/hosts
+		127.0.0.1   localhost
+		::1         localhost
+		127.0.1.1   arch.localdomain arch
 		EOT
+
+3. User management (assuming `$USER` and `$PASSWORD`)
+ 1. `passwd` to set root pw
+ 2. `echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel` to add wheel group to sudoers
+ 3. `useradd -m -G ftp,games,http,log,rfkill,sys,systemd-journal,users,uucp,wheel $USER`
+
+4. Bootloader
+  1. `pacman -S grub efibootmgr` to install package
+	2. `grub install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB` to install grub to `/boot` partition
+	3. `grub-mkconfig -o /boot/grub/grub.cfg` to create grub config
+
