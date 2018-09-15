@@ -61,8 +61,8 @@ This should happen using chroot.
  1. `echo 'arch' > /etc/hostname'` to set hostname
  2. To create hosts entries:
 		
-		`echo <<EOT >> /etc/hosts'
+		echo <<EOT >> /etc/hosts'
 		127.0.0.1		localhost
 		::1					localhost
 		127.0.1.1		arch.localdomain arch
-		EOT` 
+		EOT
