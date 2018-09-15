@@ -1,6 +1,4 @@
-If in doubt, follow the [Arch installation guide](https://wiki.archlinux.org/index.php/Installation_guide)
-
-Done:
+When in doubt, follow the [Arch installation guide](https://wiki.archlinux.org/index.php/Installation_guide)
 
 # Preparation/Base installation
 This _needs_ to happen from another system.
@@ -62,6 +60,7 @@ This should happen using chroot.
 2. Network (assuming `HOSTNAME=arch`)
  1. `echo 'arch' > /etc/hostname'` to set hostname
  2. To create hosts entries:
+		
 		`echo <<EOT >> /etc/hosts'
 		127.0.0.1		localhost
 		::1					localhost
